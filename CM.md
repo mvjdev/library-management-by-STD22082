@@ -13,77 +13,8 @@
 
 ### On a fait un petit rappel , avec un pratique de faire quelques requêtes sur OpenAPI v3.1.0 , tels que :		
 
-openapi: 3.0.3
-info:
-  title: Library API
-  version: 1.0.0
-  description: STD22001
-servers:
-  - url: https://library.com
-paths:
-  /books:
-    get:
-      summary: Get all books
-      description: The returned books are ordered by updated datetime.
-      operationId: getBooks
-      parameters:
-        - in: query
-          name: bookName
-          description: Filter return books by given name
-          required: false
-          schema:
-            type: string
-        #TODO3: add parameter to filter books by intervals of dates of the releaseDate
-      responses:
-        200:
-          description: The list of filtered books
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Book'
-    put:
-      summary: Create or update a list of books
-      operationId: crupdateBooks
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Book'
-      responses:
-        200:
-          description: The list of created or updated books
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Book'
-  /authors:
-  #TODO2: complete GET (can be filtered by name) - PUT - DELETE
-components:
-  schemas:
-    Book:
-      type: object
-      properties:
-        id:
-          type: string
-        bookName:
-          type: string
-        author:
-          #TODO1: set it as a component with properties : id, name, sex (M or F)
-          type: string
-        pageNumbers:
-          type: integer
-        topic:
-          type: string
-          enum:
-            - ROMANCE
-            - COMEDY
-            - OTHER
-        releaseDate:
-          type: string
-          format: date
+#### ●les fonctionnalités
+#### ●les endpoints : point d’entrée
+#### ●les opérations : les actions à effectuer
+#### ●les paramètres et les données en entrée
+#### ●les types de données et d'autres aspects API.
