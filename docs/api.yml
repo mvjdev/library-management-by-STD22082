@@ -18,7 +18,22 @@ paths:
           required: false
           schema:
             type: string
-        #TODO3: add parameter to filter books by intervals of dates of the releaseDate
+        # TODO3: add parameter to filter books by intervals of dates of the releaseDate
+        - in: query
+          name: startDate
+          description: Filter books released on or after this date (YYYY-MM-DD)
+          required: false
+          schema:
+            type: string
+            format: date
+        - in: query
+          name: endDate
+          description: Filter books released on or befor this date (YYYY-MM-DD)
+          required: false
+          schema:
+            type: string
+            format: date
+
       responses:
         200:
           description: The list of filtered books
@@ -108,7 +123,7 @@ components:
         bookName:
           type: string
         author:
-        #TODO1: set it as a component with properties : id, name, sex (M or F)
+          #TODO1: set it as a component with properties : id, name, sex (M or F)
           $ref: '#/components/schemas/author'
         pageNumbers:
           type: integer
@@ -122,14 +137,14 @@ components:
           type: string
           format: date
     author:
-        type: object
-        properties:
-          id:
-            type: string
-          name:
-            type: string
-          sex:
-            type: string
-            enum:
-              - M
-              - F
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        sex:
+          type: string
+          enum:
+            - M
+            - F
