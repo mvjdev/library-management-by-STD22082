@@ -96,7 +96,8 @@ paths:
           description: The created or updated author
           content:
             application/json:
-              $ref: '#/components/schemas/author'
+              schema:
+                $ref: '#/components/schemas/author'
     delete:
       summary: Delete an author by ID
       description: Delete an author by their unique ID
