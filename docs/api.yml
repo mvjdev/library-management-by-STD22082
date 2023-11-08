@@ -241,7 +241,7 @@ paths:
                 $ref: '#/components/schemas/DefaultResponse'
     delete:
       tags:
-        - Books
+        - Author
       summary: Delete an author by ID
       description: Delete an author by their unique ID
       operationId: deleteAuthor
