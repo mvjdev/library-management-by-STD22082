@@ -1,4 +1,4 @@
-# library-management
+# library-management TD3
 API that manages library.
 
 # There are two CM in 02 Nov 2023 , they are :
@@ -7,8 +7,8 @@ API that manages library.
 
 # Link of Petstore STD22082 :
 
-## https://petstore.swagger.io/?url=https://raw.githubusercontent.com/mvjdev/library-management-by-STD22082/TD1/docs/api.yml#/
+## https://petstore.swagger.io/?url=https://raw.githubusercontent.com/mvjdev/library-management-by-STD22082/oas-td3-std22082/docs/api.yml
 
 # Link of Raw :
 
-## https://raw.githubusercontent.com/mvjdev/library-management-by-STD22082/TD1/docs/api.yml#/
+## https://raw.githubusercontent.com/mvjdev/library-management-by-STD22082/oas-td3-std22082/docs/api.yml
