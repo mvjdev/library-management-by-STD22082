@@ -180,7 +180,7 @@ paths:
                 $ref: "#/components/schemas/author"
     delete:
       tags:
-        - Books
+        - Author
       summary: Delete an author by ID
       description: Delete an author by their unique ID
       operationId: deleteAuthor
