@@ -8,6 +8,7 @@ servers:
 tags:
   - name: Books
   - name: Author
+  - name: Topics
 paths:
   /books:
     get:
@@ -276,6 +277,247 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/DefaultResponse'
+
+  /books/import:
+    post:
+      tags:
+        - Books
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/ImportBook'
+          application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/ImportBook'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultResponse'
+  /authors/import:
+    post:
+      tags:
+        - Author
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/ImportAuthor'
+          application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/ImportAuthor'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultResponse'
+  /books/{bookId}/topic:
+    get:
+      tags:
+        - Topics
+      summary: Get a Book topic
+      operationId: getBookTopic
+      parameters:
+        - in: path
+          name: bookId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultResponse'
+    put:
+      tags:
+        - Topics
+      summary: Update Book topic
+      operationId: updateBookTopic
+      parameters:
+        - in: path
+          name: bookId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                topic:
+                  type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultResponse'
+  /authors/{authorId}/topic:
+    get:
+      tags:
+        - Topics
+      summary: Get an author topic
+      operationId: getAuthorTopic
+      parameters:
+        - in: path
+          name: authorId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultResponse'
+    put:
+      tags:
+        - Topics
+      summary: Update an author topic
+      operationId: updateAuthorTopic
+      parameters:
+        - in: path
+          name: authorId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                topic:
+                  type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultResponse'
 components:
   parameters:
     queryPagination:
@@ -361,6 +603,32 @@ components:
         type: string
       authorId:
         type: string
+    ImportBook:
+      type: object
+      properties:
+        bookName:
+          type: string
+        author:
+          type: string
+        pageNumbers:
+          type: integer
+        topic:
+          type: string
+        releaseDate:
+          type: string
+          format: date
+        idAuthor:
+          type: string
+    ImportAuthor:
+      type: object
+      properties:
+        authorName:
+          type: string
+        sex:
+          type: string
+          enum:
+            - M
+            - F
     DefaultResponse:
       type: object
       properties:
@@ -374,6 +642,8 @@ components:
               type: string
               description: Response message
         body:
-          type: object
-          description: Response body
+            oneOf:
+            - $ref: '#/components/schemas/Book'
+            - $ref: '#/components/schemas/ImportBook'
+
 
