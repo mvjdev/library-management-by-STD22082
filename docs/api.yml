@@ -104,7 +104,7 @@ paths:
   /books/authors:
       put:
         tags:
-        - Books
+        - Author
         summary: Update the author of books
         operationId: updateBooksAuthors
         requestBody:
