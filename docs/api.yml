@@ -7,7 +7,7 @@ servers:
   - url: https://library.com
 tags:
   - name: Books
-  - name: Author
+  - name: Authors
   - name: Topics
 paths:
   /books:
@@ -166,7 +166,7 @@ paths:
     # TODO2: complete GET (can be filtered by name) - PUT - DELETE
     get:
       tags:
-        - Author
+        - Authors
       summary: Get all authors
       description: Get a list of authors, optionally filtered by name
       operationId: getAuthors
@@ -206,7 +206,7 @@ paths:
                 $ref: '#/components/schemas/DefaultResponse'
     put:
       tags:
-        - Author
+        - Authors
       summary: Create or update an author
       operationId: createUpdateAuthor
       requestBody:
@@ -241,7 +241,7 @@ paths:
                 $ref: '#/components/schemas/DefaultResponse'
     delete:
       tags:
-        - Author
+        - Authors
       summary: Delete an author by ID
       description: Delete an author by their unique ID
       operationId: deleteAuthor
@@ -320,7 +320,7 @@ paths:
   /authors/import:
     post:
       tags:
-        - Author
+        - Authors
       requestBody:
         content:
           application/json:
