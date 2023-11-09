@@ -245,15 +245,25 @@ paths:
         200:
           description: List of imported authors
           $ref: '#/components/schemas/Author'
-  /guests:
+  /guests/{guestId}:
     get:
       tags:
         - Guests
-      summary: Get all guests
-      operationId: getGuests
+      summary: Get a guest by ID
+      operationId: getGuestById
+      parameters:
+        - name: guestId
+          in: path
+          required: true
+          schema:
+            type: integer
       responses:
         200:
-          $ref: '#/components/schemas/Guest'
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Guest'
         400:
           $ref: '#/components/responses/400'
         403:
@@ -279,7 +289,11 @@ paths:
               $ref: '#/components/schemas/Guest'
       responses:
         200:
-          $ref: '#/components/schemas/Guest'
+          description: Guest updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Guest'
         400:
           $ref: '#/components/responses/400'
         403:
@@ -320,6 +334,66 @@ paths:
       responses:
         200:
           description: Deleted
+        400:
+          $ref: '#/components/responses/400'
+        403:
+          $ref: '#/components/responses/403'
+        500:
+          $ref: '#/components/responses/500'
+  /books/{bookId}/borrow:
+    post:
+      tags:
+        - GuestAction
+      summary: Borrow a book
+      operationId: borrowBook
+      parameters:
+        - in: path
+          name: bookId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Guest'
+      responses:
+        200:
+          description: The book has been borrowed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+        400:
+          $ref: '#/components/responses/400'
+        403:
+          $ref: '#/components/responses/403'
+        500:
+          $ref: '#/components/responses/500'
+  /books/{bookId}/return:
+    put:
+      tags:
+        - GuestAction
+      summary: Return a book
+      operationId: returnBook
+      parameters:
+        - in: path
+          name: bookId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Guest'
+      responses:
+        200:
+          description: The book has been returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
         400:
           $ref: '#/components/responses/400'
         403:
@@ -449,9 +523,24 @@ components:
     Guest:
       type: object
       properties:
-        id:
+        guestId:
           type: integer
         name:
           type: string
         reference:
           type: string
+    GuestAction:
+      type: object
+      properties:
+        id:
+          type: integer
+        guestId:
+          type: integer
+        bookId:
+          type: integer
+        borrowedDate:
+          type: string
+          format: date-time
+        returnedDate:
+          type: string
+          format: date-time
