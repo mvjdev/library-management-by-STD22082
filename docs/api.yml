@@ -426,6 +426,31 @@ paths:
           $ref: '#/components/responses/403'
         500:
           $ref: '#/components/responses/500'
+  /guests/{guestId}/history:
+    get:
+      summary: Recovers a visitor's history
+      operationId: getVisitorHistory
+      parameters:
+        - in: path
+          name: visitorId
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: The visitor's history has been retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Book'
+        400:
+          $ref: '#/components/responses/400'
+        403:
+          $ref: '#/components/responses/403'
+        500:
+          $ref: '#/components/responses/500'
 components:
   parameters:
     queryPagination:
