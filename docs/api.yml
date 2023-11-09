@@ -255,11 +255,11 @@ paths:
         200:
           $ref: '#/components/schemas/Guest'
         400:
-          $ref: '#/components/schemas/StatusMessage'
+          $ref: '#/components/responses/400'
         403:
-          $ref: '#/components/schemas/StatusMessage'
+          $ref: '#/components/responses/403'
         500:
-          $ref: '#/components/schemas/StatusMessage'
+          $ref: '#/components/responses/500'
     put:
       tags:
         - Guests
@@ -281,11 +281,11 @@ paths:
         200:
           $ref: '#/components/schemas/Guest'
         400:
-          $ref: '#/components/schemas/StatusMessage'
+          $ref: '#/components/responses/400'
         403:
-          $ref: '#/components/schemas/StatusMessage'
+          $ref: '#/components/responses/403'
         500:
-          $ref: '#/components/schemas/StatusMessage'
+          $ref: '#/components/responses/500'
     post:
       tags:
         - Guests
@@ -301,11 +301,11 @@ paths:
         200:
           $ref: '#/components/schemas/Guest'
         400:
-          $ref: '#/components/schemas/StatusMessage'
+          $ref: '#/components/responses/400'
         403:
-          $ref: '#/components/schemas/StatusMessage'
+          $ref: '#/components/responses/403'
         500:
-          $ref: '#/components/schemas/StatusMessage'
+          $ref: '#/components/responses/500'
     delete:
       tags:
         - Guests
@@ -321,11 +321,11 @@ paths:
         200:
           description: Deleted
         400:
-          $ref: '#/components/schemas/StatusMessage'
+          $ref: '#/components/responses/400'
         403:
-          $ref: '#/components/schemas/StatusMessage'
+          $ref: '#/components/responses/403'
         500:
-          $ref: '#/components/schemas/StatusMessage'
+          $ref: '#/components/responses/500'
 components:
   parameters:
     queryPagination:
