@@ -1,14 +1,10 @@
 openapi: 3.0.3
 info:
   title: Library API
-  version: 1.1.0
+  version: 1.5.0
   description: STD22082
 servers:
   - url: https://library.com
-tags:
-  - name: Books
-  - name: Authors
-  - name: Topics
 paths:
   /books:
     get:
@@ -24,565 +20,384 @@ paths:
           required: false
           schema:
             type: string
-        # TODO3: add parameter to filter books by intervals of dates of the releaseDate
         - in: query
-          name: releaseDate
-          description: Filter books released on or after this date (YYYY-MM-DD)
+          name: startInterval
+          description: the date start interval that will filter the response
           required: false
           schema:
             type: string
             format: date
-        - $ref: "#/components/parameters/queryPagination"
-        - $ref: "#/components/parameters/queryPageSize"
-
+        - in: query
+          name: endInterval
+          description: the end date of interval that will filter the response
+          required: false
+          schema:
+            type: string
+            format: date
+        - $ref: '#/components/parameters/queryPagination'
       responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Book'
-        '400':
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DefaultResponse'
-        '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DefaultResponse'
-        '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DefaultResponse'
+        200:
+          $ref: '#/components/schemas/Book'
+        400:
+          $ref: '#/components/responses/400'
+        403:
+          $ref: '#/components/responses/403'
+        500:
+          $ref: '#/components/responses/500'
     put:
       tags:
         - Books
       summary: Create or update a list of books
-      operationId: crupdateBooks
+      operationId: Create or update Books
       requestBody:
         content:
           application/json:
             schema:
               type: array
               items:
-                $ref: "#/components/schemas/CrupdateBook"
+                $ref: '#/components/schemas/CrupdateBook'
       responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Book'
-        '400':
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DefaultResponse'
-        '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DefaultResponse'
-        '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DefaultResponse'
-  # Attachement Author and Book
+        200:
+          $ref: '#/components/schemas/Book'
+        400:
+          $ref: '#/components/responses/400'
+        403:
+          $ref: '#/components/responses/403'
+        500:
+          $ref: '#/components/responses/500'
   /books/{bookId}/authors/{authorId}:
     put:
       tags:
         - Books
-      summary: Associate an author with a book
-      operationId: updateBookAuthor
+        - Authors
+      summary: update book's author by their own ID
+      operationId: UpdateBookAuthor
       parameters:
         - in: path
           name: bookId
           required: true
           schema:
-            type: string
+            type: integer
         - in: path
           name: authorId
           required: true
           schema:
-            type: string
+            type: integer
       responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Book'
-        '400':
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DefaultResponse'
-        '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DefaultResponse'
-        '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DefaultResponse'
+        200:
+          $ref: '#/components/schemas/Book'
+        400:
+          $ref: '#/components/responses/400'
+        403:
+          $ref: '#/components/responses/403'
+        500:
+          $ref: '#/components/responses/500'
   /books/authors:
-      put:
-        tags:
-        - Books
-        summary: Update the author of books
-        operationId: updateBooksAuthors
-        requestBody:
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/UpdateBookAuthor"
-        responses:
-          200:
-            description: Les auteurs des livres ont été modifiés
-            content:
-              application/json:
-                schema:
-                  type: array
-                  items:
-                    $ref: "#/components/schemas/Book"
-  /authors:
-    # TODO2: complete GET (can be filtered by name) - PUT - DELETE
-    get:
-      tags:
-        - Authors
-      summary: Get all authors
-      description: Get a list of authors, optionally filtered by name
-      operationId: getAuthors
-      parameters:
-        - in: query
-          name: authorName
-          description: Filter authors by name
-          required: false
-          schema:
-            type: string
-        - $ref: "#/components/parameters/pathPagination"
-        - $ref: "#/components/parameters/pathPagesize"
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Book'
-        '400':
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DefaultResponse'
-        '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DefaultResponse'
-        '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DefaultResponse'
     put:
       tags:
+        - Books
         - Authors
-      summary: Create or update an author
-      operationId: createUpdateAuthor
+      summary: update
+      operationId: CrupdateBook
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/author"
+              type: array
+              items:
+                properties:
+                  bookId:
+                    type: integer
+                  authorId:
+                    type: integer
       responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Book'
-        '400':
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DefaultResponse'
-        '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DefaultResponse'
-        '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DefaultResponse'
-    delete:
-      tags:
-        - Authors
-      summary: Delete an author by ID
-      description: Delete an author by their unique ID
-      operationId: deleteAuthor
-      parameters:
-        - in: path
-          name: authorId
-          description: ID of the author to delete
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Book'
-        '400':
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DefaultResponse'
-        '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DefaultResponse'
-        '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DefaultResponse'
-
+        200:
+          $ref: '#/components/schemas/Book'
+        400:
+          $ref: '#/components/responses/400'
+        403:
+          $ref: '#/components/responses/403'
+        500:
+          $ref: '#/components/responses/500'
   /books/import:
     post:
       tags:
-        - Books
+        - Import
+      summary: Import books from Excel or JSON
+      operationId: ImportBooks
       requestBody:
+        content:
+          application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+            schema:
+              $ref: '#/components/schemas/ImportBook'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ImportBook'
+      responses:
+        200:
+          description: List of imported books
+          $ref: '#/components/schemas/Book'
+  /authors/{page}/{pageSize}:
+    get:
+      tags:
+        - Authors
+      summary: Get all filtered authors
+      description: get all authors filtered by given name
+      operationId: getFilteredAuthors
+      parameters:
+        - in: query
+          name: name
+          description: the name that filter the query
+          required: true
+          schema:
+            type: string
+        - $ref: '#/components/parameters/pathPagination'
+      responses:
+        200:
+          $ref: '#/components/schemas/Author'
+        400:
+          $ref: '#/components/responses/400'
+        403:
+          $ref: '#/components/responses/403'
+        500:
+          $ref: '#/components/responses/500'
+    put:
+      tags:
+        - Authors
+      summary: create or modify an author
+      description: It almost looks for the id to find if there is already on and modify else create
+      operationId: updateAuthor
+      requestBody:
+        required: true
         content:
           application/json:
             schema:
-              oneOf:
-                - $ref: '#/components/schemas/ImportBook'
-          application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
-            schema:
-              oneOf:
-                - $ref: '#/components/schemas/ImportBook'
+              items:
+                $ref: '#/components/schemas/Author'
       responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Book'
-        '400':
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DefaultResponse'
-        '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DefaultResponse'
-        '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DefaultResponse'
+        200:
+          $ref: '#/components/schemas/Author'
+        400:
+          $ref: '#/components/responses/400'
+        403:
+          $ref: '#/components/responses/403'
+        500:
+          $ref: '#/components/responses/500'
+    delete:
+      tags:
+        - Authors
+      summary: Remove a list of author by their Id
+      description: Remove an author by the body request
+      operationId: removeAuthor
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: integer
+      responses:
+        200:
+          $ref: '#/components/schemas/Author'
+        400:
+          $ref: '#/components/responses/400'
+        403:
+          $ref: '#/components/responses/403'
+        500:
+          $ref: '#/components/responses/500'
+  /authors/{id}:
+    delete:
+      tags:
+        - Authors
+      summary: delete an author by its ID
+      operationId: DeleteAuthorById
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          $ref: '#/components/schemas/Author'
+        400:
+          $ref: '#/components/responses/400'
+        403:
+          $ref: '#/components/responses/403'
+        500:
+          $ref: '#/components/responses/500'
   /authors/import:
     post:
       tags:
-        - Authors
+        - Import
+      summary: Import authors from Excel or JSON
+      operationId: ImportAuthors
       requestBody:
         content:
-          application/json:
-            schema:
-              oneOf:
-                - $ref: '#/components/schemas/ImportAuthor'
           application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
             schema:
-              oneOf:
-                - $ref: '#/components/schemas/ImportAuthor'
+              $ref: '#/components/schemas/ImportAuthors'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ImportAuthors'
       responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Book'
-        '400':
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DefaultResponse'
-        '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DefaultResponse'
-        '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DefaultResponse'
-  /books/{bookId}/topic:
+        200:
+          description: List of imported authors
+          $ref: '#/components/schemas/Author'
+  /guests:
     get:
       tags:
-        - Topics
-      summary: Get a Book topic
-      operationId: getBookTopic
-      parameters:
-        - in: path
-          name: bookId
-          required: true
-          schema:
-            type: string
+        - Guests
+      summary: Get all guests
+      operationId: getGuests
       responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Book'
-        '400':
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DefaultResponse'
-        '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DefaultResponse'
-        '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DefaultResponse'
+        200:
+          $ref: '#/components/schemas/Guest'
+        400:
+          $ref: '#/components/schemas/StatusMessage'
+        403:
+          $ref: '#/components/schemas/StatusMessage'
+        500:
+          $ref: '#/components/schemas/StatusMessage'
     put:
       tags:
-        - Topics
-      summary: Update Book topic
-      operationId: updateBookTopic
+        - Guests
+      summary: Update a guest by ID
+      operationId: updateGuestById
       parameters:
-        - in: path
-          name: bookId
+        - name: guestId
+          in: path
           required: true
           schema:
-            type: string
+            type: integer
       requestBody:
+        required: true
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                topic:
-                  type: string
+              $ref: '#/components/schemas/Guest'
       responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Book'
-        '400':
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DefaultResponse'
-        '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DefaultResponse'
-        '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DefaultResponse'
-  /authors/{authorId}/topic:
-    get:
+        200:
+          $ref: '#/components/schemas/Guest'
+        400:
+          $ref: '#/components/schemas/StatusMessage'
+        403:
+          $ref: '#/components/schemas/StatusMessage'
+        500:
+          $ref: '#/components/schemas/StatusMessage'
+    post:
       tags:
-        - Topics
-      summary: Get an author topic
-      operationId: getAuthorTopic
-      parameters:
-        - in: path
-          name: authorId
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Book'
-        '400':
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DefaultResponse'
-        '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DefaultResponse'
-        '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DefaultResponse'
-    put:
-      tags:
-        - Topics
-      summary: Update an author topic
-      operationId: updateAuthorTopic
-      parameters:
-        - in: path
-          name: authorId
-          required: true
-          schema:
-            type: string
+        - Guests
+      summary: Create a new guest
+      operationId: createGuest
       requestBody:
+        required: true
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                topic:
-                  type: string
+              $ref: '#/components/schemas/Guest'
       responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Book'
-        '400':
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DefaultResponse'
-        '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DefaultResponse'
-        '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DefaultResponse'
+        200:
+          $ref: '#/components/schemas/Guest'
+        400:
+          $ref: '#/components/schemas/StatusMessage'
+        403:
+          $ref: '#/components/schemas/StatusMessage'
+        500:
+          $ref: '#/components/schemas/StatusMessage'
+    delete:
+      tags:
+        - Guests
+      summary: Delete a guest by ID
+      operationId: deleteGuestById
+      parameters:
+        - name: guestId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Deleted
+        400:
+          $ref: '#/components/schemas/StatusMessage'
+        403:
+          $ref: '#/components/schemas/StatusMessage'
+        500:
+          $ref: '#/components/schemas/StatusMessage'
 components:
   parameters:
     queryPagination:
       in: query
-      name: page
-      description: Page number
-      required: true
+      name: pagination
+      required: false
       schema:
-        type: integer
-        default: 1
-    queryPageSize:
-      in: query
-      name: pageSize
-      description: Number of items per page
-      required: true
-      schema:
-        type: integer
-        default: 50
+        type: object
+        properties:
+          page:
+            type: integer
+            default: 1
+          pageSize:
+            type: integer
+            default: 50
     pathPagination:
       in: path
-      name: page
-      description: Page number
+      name: pagination
       required: true
       schema:
-        type: integer
-        default: 1
-    pathPagesize:
-      in: path
-      name: pageSize
-      description: Number of items per page
-      required: true
-      schema:
-        type: integer
-        default: 50
+        type: object
+        properties:
+          page:
+            type: integer
+            default: 1
+          pageSize:
+            type: integer
+            default: 50
+  responses:
+    400:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/StatusMessage'
+          example:
+            type: error
+            message: Bad request
+    403:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/StatusMessage'
+          example:
+            type: error
+            message: Forbidden
+    500:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/StatusMessage'
+          example:
+            type: error
+            message: Internal server error
   schemas:
-    Book:
-      allOf:
-        - $ref: "#/components/schemas/CrupdateBook"
-        - $ref: '#/components/schemas/DefaultResponse'
-        - type: object
-          properties:
-            body:
-              $ref: '#/components/schemas/Book'
-      properties:
-        author:
-          nullable: true
-          #TODO1: set it as a component with properties : id, name, sex (M or F)
-          $ref: "#/components/schemas/author"
-    author:
+    Author:
       type: object
       properties:
-        authorId:
+        id:
+          type: integer
+        name:
           type: string
-        authorNname:
-          type: string
-        sex:
+        gender:
           type: string
           enum:
-            - M
-            - F
+            - Male
+            - Female
     CrupdateBook:
       type: object
       properties:
-        bookId:
-          type: string
         bookName:
           type: string
         pageNumbers:
@@ -596,54 +411,47 @@ components:
         releaseDate:
           type: string
           format: date
-    UpdateBookAuthor:
-     type: object
-     properties:
-      bookId:
-        type: string
-      authorId:
-        type: string
-    ImportBook:
+    Book:
       type: object
+      allOf:
+        - $ref: '#/components/schemas/CrupdateBook'
       properties:
-        bookName:
+        id:
           type: string
         author:
+          $ref: '#/components/schemas/Author'
+    StatusMessage:
+      type: object
+      properties:
+        type:
           type: string
-        pageNumbers:
+        message:
+          type: string
+    ImportBook:
+      type: array
+      items:
+        allOf:
+          - $ref: '#/components/schemas/CrupdateBook'
+        properties:
+          idAuthor:
+            type: integer
+    ImportAuthors:
+      type: array
+      items:
+        properties:
+          authorName:
+            type: string
+          gender:
+            type: string
+            enum:
+              - M
+              - F
+    Guest:
+      type: object
+      properties:
+        id:
           type: integer
-        topic:
+        name:
           type: string
-        releaseDate:
+        reference:
           type: string
-          format: date
-        idAuthor:
-          type: string
-    ImportAuthor:
-      type: object
-      properties:
-        authorName:
-          type: string
-        sex:
-          type: string
-          enum:
-            - M
-            - F
-    DefaultResponse:
-      type: object
-      properties:
-        status:
-          type: object
-          properties:
-            code:
-              type: integer
-              description: HTTP status code
-            message:
-              type: string
-              description: Response message
-        body:
-            oneOf:
-            - $ref: '#/components/schemas/Book'
-            - $ref: '#/components/schemas/ImportBook'
-
-
